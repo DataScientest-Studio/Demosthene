@@ -17,7 +17,8 @@ def run():
     if st.session_state.Cloud == 0: 
         st.image("assets/miss-honey-glasses-off.gif",use_column_width=True)
     else:
-        st.image("https://media.tenor.com/pfOeAfytY98AAAAC/miss-honey-glasses-off.gif",use_column_width=True)
+        # st.image("https://media.tenor.com/pfOeAfytY98AAAAC/miss-honey-glasses-off.gif",use_column_width=True)
+        st.image("assets/miss-honey-glasses-off.gif",use_column_width=True)
         
     st.title(tr(title))
     st.markdown('''
