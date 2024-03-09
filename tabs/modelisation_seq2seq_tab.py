@@ -7,7 +7,7 @@ from transformers import pipeline
 # from translate import Translator
 from deep_translator import GoogleTranslator
 from audio_recorder_streamlit import audio_recorder
-# import speech_recognition as sr
+import speech_recognition as sr
 import whisper
 import io
 import wavio
@@ -19,6 +19,7 @@ from tensorflow import keras
 from keras_nlp.layers import TransformerEncoder
 from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
+# from PIL import Image
 from gtts import gTTS
 from extra_streamlit_components import tab_bar, TabBarItemData
 from translate_app import tr
@@ -488,7 +489,6 @@ def run():
             st.write("## **"+tr("Résultats")+" :**\n")
             st.audio(audio_bytes, format="audio/wav")
             try:
-                # if detection:
                 # Create a BytesIO object from the audio stream
                 audio_stream_bytesio = io.BytesIO(audio_bytes)
 
@@ -501,16 +501,28 @@ def run():
                 # Convert the audio data to a NumPy array
                 audio_input = np.array(audio_data, dtype=np.float32)
                 audio_input = np.mean(audio_input, axis=1)/32768
-                if detection:
+                
+                if detection:            
                     result = model_speech.transcribe(audio_input)
                     st.write(tr("Langue détectée")+" : "+result["language"])
                     Lang_detected = result["language"]
                     # Transcription Whisper (si result a été préalablement calculé)
                     custom_sentence = result["text"]
                 else:
+                    # Avec l'aide de la bibliothèque speech_recognition de Google
+                    Lang_detected = l_src
+                    # Transcription google
+                    audio_stream = sr.AudioData(audio_bytes, 32000, 2) 
+                    r = sr.Recognizer()
+                    custom_sentence = r.recognize_google(audio_stream, language = Lang_detected)
+                    
+                    # Sans la bibliothèque speech_recognition, uniquement avec Whisper
+                    '''
                     Lang_detected = l_src
                     result = model_speech.transcribe(audio_input, language=Lang_detected)
                     custom_sentence = result["text"]
+                    '''
+
                 if custom_sentence!="":
                     # Lang_detected = lang_classifier (custom_sentence)[0]['label']
                     #st.write('Langue détectée : **'+Lang_detected+'**')

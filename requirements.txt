@@ -21,6 +21,7 @@ tensorflow==2.12.0
 sentencepiece==0.1.99
 openai-whisper==20231117
 torch==2.2.0
+speechrecognition==3.10.1
 audio_recorder_streamlit==0.0.8
 whisper==1.1.10
 wavio==0.0.8
